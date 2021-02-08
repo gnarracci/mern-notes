@@ -6,9 +6,14 @@ const noteSchema = new Schema({
         type: String,
         required: true
     },
-    author: String
+    author: String,
+    date: {
+        type: Date,
+        default: Date.now
+    }
 }, {
-    timestamps: true
+    timestamps: true,
+    versionKey: false
 });
 
 module.exports = model('Note', noteSchema);

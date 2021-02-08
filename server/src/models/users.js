@@ -8,7 +8,8 @@ const userSchema = new Schema({
 	    unique: true
     }
 }, {
-    timestamps: true
+    timestamps: true,
+    versionKey: false
 });
 
 module.exports = model('User', userSchema);

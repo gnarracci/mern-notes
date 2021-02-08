@@ -1,13 +1,46 @@
 const userCtrl = {};
 
-userCtrl.getUsers = (req, res) => res.json({message: 'Users Adquired'});
+const User = require('../models/users');
 
-userCtrl.createUser = (req, res) => res.json({message: 'User Created'});
+userCtrl.getUsers = async (req, res) => {
+    try {
+        const users = await User.find();
+        if (users.length > 0) {
+            res.status(200).json(users);
+        }else{
+            res.status(404).json({message: "No data found"});
+        }
+    } catch (error) {
+        res.status(400).json({message: "Something went wrong"});
+    }
+};
 
-userCtrl.getUser = (req, res) => res.json({message: 'One User Adquired'});
+userCtrl.createUser = async (req, res) => {
+    try {
+        const { username} = req.body;
+        const newUser = new User({
+            username: username
+        });
+        await newUser.save();
+        console.log(newUser);
+        res.status(200).json({message: "User Saved"});
+    } catch (error) {
+        res.status(400).json({message: "Something went wrong"});
+    }
+}
 
-userCtrl.updateUser = (req, res) => res.json({message: 'One User Updated'});
+userCtrl. deleteUser = async (req, res) => {
+    try {
+        const user = await User.findByIdAndDelete(req.params.id);
+        if (!user.length > 0) {
+            res.status(200).json({message: "User Deleted"});
+        }else{
+            res.status(404).json({message: "No data found"});
+        }
+    } catch (error) {
+        res.status(400).json({message: "Something went wrong"});
+    }
 
-userCtrl. deleteUser = (req, res) => res.json({message: 'One User Deleted'})
+}
 
 module.exports = userCtrl;
