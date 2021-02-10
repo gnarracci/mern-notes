@@ -8,10 +8,13 @@ import NotesList from './components/NotesList';
 
 function App() {
   return (
-    <div>
+    <Router>
       <Navigation />
-      Hello World
-    </div>
+      <Route path="/" exact component={NotesList} />
+      <Route path="/edit/:id" component={CreateNote} />
+      <Route path="/create" component={CreateNote} />
+      <Route path="/user" component={CreateUser} />      
+    </Router>
   );
 }
 
