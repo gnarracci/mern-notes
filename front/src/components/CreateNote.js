@@ -14,22 +14,33 @@ export default class CreateNote extends Component {
 
   async componentDidMount() {
     const res = await axios.get("http://localhost:4000/api/users");
-    this.setState({ users: res.data.map((user) => user.username) });
+    this.setState({ users: res.data.map((user) => user.username), 
+    userSelected: res.data[0].username});
     console.log(this.state.users);
   }
 
-  onSubmit = (e) => {
-      console.log(this.state.userSelected, this.state.title, this.state.content, this.state.date);
+  onSubmit = async (e) => {
     e.preventDefault();
+    const newNote = {
+      title: this.state.title,
+      content: this.state.content,
+      date: this.state.date,
+      author: this.state.userSelected
+    };
+    const res = await axios.post('http://localhost:4000/api/notes', newNote);
+    console.log(newNote, res);
+
+    
   };
 
   onInputChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
+    
   };
 
-  onChangeDate = date => {
+  onChangeDate = (date) => {
     this.setState({ date });
   };
 
